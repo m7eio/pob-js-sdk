@@ -1,0 +1,42 @@
+{
+  "name": "@m7eio/pob-js-sdk",
+  "version": "0.0.1",
+  "description": "Proof of BUIDL protocol sdk.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mete-work/mete-plugins.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "rm -rf ./dist && mkdir dist",
+    "postbuild": "tsc -p tsconfig.build.cjs.json && tsc -p tsconfig.build.esm.json && rm -rf ./dist/*.tsbuildinfo",
+    "watch": "babel src -d dist --source-maps --copy-files --extensions \".ts\" --watch"
+  },
+  "author": "M7e.io <contact@m7e.io>",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.11.0",
+    "ethers": "^5.6.9",
+    "isomorphic-fetch": "^3.0.0",
+    "qs": "^6.11.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@types/isomorphic-fetch": "^0.0.36",
+    "@types/node": "^18.0.6",
+    "@types/qs": "^6.9.7",
+    "@types/uniqid": "^5.2.0",
+    "typescript": "^4.0.2"
+  }
+}
