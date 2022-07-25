@@ -47,14 +47,6 @@ export async function saveJSONToIPFS(data: AnySchema): Promise<string> {
   return resData.data.cid;
 }
 
-function base64(str: string): string {
-  if (window) {
-    return window.btoa(str);
-  }
-
-  return Buffer.from(str).toString("base64");
-}
-
 export async function uploadFileToIPFS(file: File): Promise<{
   // v1 cid: @see https://docs.ipfs.io/concepts/content-addressing/#identifier-formats
   cid: string;
@@ -73,7 +65,9 @@ export async function uploadFileToIPFS(file: File): Promise<{
     method: "POST",
     body: payload,
     headers: {
-      Authorization: `Basic ${base64(`${username}:${password}`)}`,
+      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString(
+        "base64"
+      )}`,
     },
   });
 

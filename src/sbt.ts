@@ -1,6 +1,7 @@
 import { ContractTransaction, ethers } from 'ethers';
 
 import Base from './base';
+import { makeClaimWorkflowSBTCallData } from './make-call-data';
 
 export default class SBT extends Base {
   constructor(provider: ethers.providers.Provider | ethers.Signer) {
@@ -18,7 +19,7 @@ export default class SBT extends Base {
   }
 
   async claim(workflow: string): Promise<ContractTransaction> {
-    const factorySignerContract = await this.getEthersSignerContract('WorkflowQuest', workflow);
-    return factorySignerContract.claim();
+    const factorySignerContract = await this.getEthersSignerContract('Factory');
+    return factorySignerContract.callWorkflow(workflow, makeClaimWorkflowSBTCallData());
   }
 }

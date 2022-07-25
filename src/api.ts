@@ -48,7 +48,10 @@ export default class API {
     filter?: string,
     sort?: string,
   ): Promise<Response<PaginateResult<WorkflowResponse>>> {
-    const query = qs.stringify({ page, pageSize, filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { page, pageSize, filter: encodeURIComponent(filter || ''), sort },
+      { addQueryPrefix: true },
+    );
     const api = `${this.endpoint}/workflow${query}`;
     return (await fetch(api)).json();
   }
@@ -111,10 +114,12 @@ export default class API {
   async getTakerWorkflowsWithStatus(
     taker: string,
     status: 'applied' | 'approved' | 'claimed',
+    page = 1,
+    pageSize = 10,
     filter?: string,
     sort?: string,
   ): Promise<Response<PaginateResult<WorkflowLogResponse>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify({ filter, sort, page, pageSize }, { addQueryPrefix: true });
 
     const api = `${this.endpoint}/workflow/taker/${taker}/${status}${query}`;
     return (await fetch(api)).json();
@@ -122,10 +127,12 @@ export default class API {
 
   async getIssuerWorkflowsWithStatus(
     issuer: string,
+    page = 1,
+    pageSize = 10,
     filter?: string,
     sort?: string,
   ): Promise<Response<PaginateResult<WorkflowLogResponse>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify({ filter, sort, page, pageSize }, { addQueryPrefix: true });
 
     const api = `${this.endpoint}/workflow/issuer/${issuer}/created${query}`;
     return (await fetch(api)).json();
@@ -206,12 +213,8 @@ export default class API {
     workflow: string,
     taskIndex: number | string,
     taker: string,
-    filter?: {
-      [key: string]: string;
-    },
-    sort?: {
-      [key: string]: string;
-    },
+    filter?: string,
+    sort?: string,
   ): Promise<Response<PaginateResult<TaskLogResponse>>> {
     const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
 
@@ -222,12 +225,8 @@ export default class API {
   async getTaskLogs(
     workflow: string,
     taskIndex: number,
-    filter?: {
-      [key: string]: string;
-    },
-    sort?: {
-      [key: string]: string;
-    },
+    filter?: string,
+    sort?: string,
   ): Promise<Response<PaginateResult<TaskLogResponse[]>>> {
     const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
 
