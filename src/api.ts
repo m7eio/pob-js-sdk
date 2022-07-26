@@ -1,16 +1,16 @@
-import fetch from 'isomorphic-fetch';
-import qs from 'qs';
+import fetch from "isomorphic-fetch";
+import qs from "qs";
 
-import Base from './base';
-import { PaginateResult, Response } from './interface/common';
-import { TaskLogResponse, TaskStatus } from './interface/task';
+import Base from "./base";
+import { PaginateResult, Response } from "./interface/common";
+import { TaskLogResponse, TaskStatus } from "./interface/task";
 import {
   WorkflowLogResponse,
   TaskResponse,
   WorkflowTakerStatus,
   WorkflowResponse,
-} from './interface/workflow';
-import { WorkflowTemplateaResponse } from './interface/workflow/template';
+} from "./interface/workflow";
+import { WorkflowTemplateaResponse } from "./interface/workflow/template";
 
 export default class API {
   public endpoint: string;
@@ -19,12 +19,11 @@ export default class API {
   private pobBase: Base;
 
   constructor(pobBase: Base, endpoint?: string) {
-    this.endpoint = endpoint || 'https://alpha.pob.work/api/v1';
+    this.endpoint = endpoint || "https://alpha.pob.work/api/v1";
     this.pobBase = pobBase;
   }
-
   async getWorkflowTemplate(templateIndex: number) {
-    if (!templateIndex) throw new Error('workflow template index is required.');
+    if (!templateIndex) throw new Error("workflow template index is required.");
 
     const api = `${this.endpoint}/workflow/template/${templateIndex}`;
     return (await fetch(api)).json();
@@ -34,9 +33,12 @@ export default class API {
     page = 1,
     pageSize = 10,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<WorkflowTemplateaResponse[]>>> {
-    const query = qs.stringify({ page, pageSize, filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { page, pageSize, filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/template${query}`;
     return (await fetch(api)).json();
@@ -46,11 +48,11 @@ export default class API {
     page = 1,
     pageSize = 10,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<WorkflowResponse>>> {
     const query = qs.stringify(
-      { page, pageSize, filter: encodeURIComponent(filter || ''), sort },
-      { addQueryPrefix: true },
+      { page, pageSize, filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
     );
     const api = `${this.endpoint}/workflow${query}`;
     return (await fetch(api)).json();
@@ -66,9 +68,12 @@ export default class API {
     page = 1,
     pageSize = 10,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<TaskResponse>>> {
-    const query = qs.stringify({ page, pageSize, filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { page, pageSize, filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/${workflow}/task${query}`;
     return (await fetch(api)).json();
@@ -76,7 +81,7 @@ export default class API {
 
   async getWorkflowTask(
     workflow: string,
-    taskIndex: number | string,
+    taskIndex: number | string
   ): Promise<Response<TaskResponse>> {
     const api = `${this.endpoint}/workflow/${workflow}/task/${taskIndex}`;
     return (await fetch(api)).json();
@@ -90,9 +95,12 @@ export default class API {
   async getWorkflowTakersWithStatus(
     workflow: string,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<WorkflowTakerStatus>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/${workflow}/status/taker${query}`;
     return (await fetch(api)).json();
@@ -105,7 +113,7 @@ export default class API {
    */
   async getWorkflowTakerStatus(
     workflow: string,
-    taker: string,
+    taker: string
   ): Promise<Response<WorkflowTakerStatus>> {
     const api = `${this.endpoint}/workflow/${workflow}/status/taker/${taker}`;
     return (await fetch(api)).json();
@@ -113,13 +121,16 @@ export default class API {
 
   async getTakerWorkflowsWithStatus(
     taker: string,
-    status: 'applied' | 'approved' | 'claimed',
+    status: "applied" | "approved" | "claimed",
     page = 1,
     pageSize = 10,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<WorkflowLogResponse>>> {
-    const query = qs.stringify({ filter, sort, page, pageSize }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort, page, pageSize },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/taker/${taker}/${status}${query}`;
     return (await fetch(api)).json();
@@ -130,9 +141,12 @@ export default class API {
     page = 1,
     pageSize = 10,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<WorkflowLogResponse>>> {
-    const query = qs.stringify({ filter, sort, page, pageSize }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort, page, pageSize },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/issuer/${issuer}/created${query}`;
     return (await fetch(api)).json();
@@ -140,11 +154,14 @@ export default class API {
 
   async getReviewerWorkflowsWithStatus(
     reviewer: string,
-    status: 'approved' | 'rejected',
+    status: "approved" | "rejected",
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<WorkflowLogResponse>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/reviewer/${reviewer}/${status}${query}`;
     return (await fetch(api)).json();
@@ -155,15 +172,26 @@ export default class API {
     return (await fetch(api)).json();
   }
 
-  async getTaskTemplates(page = 1, pageSize = 10) {
-    const query = qs.stringify({ page, pageSize }, { addQueryPrefix: true });
+  async getTaskTemplates(
+    page = 1,
+    pageSize = 10,
+    filter?: string,
+    sort?: string
+  ) {
+    const query = qs.stringify(
+      { page, pageSize, filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/task/template${query}`;
     return (await fetch(api)).json();
   }
 
-  async getTasks(page = 1, pageSize = 10) {
-    const query = qs.stringify({ page, pageSize }, { addQueryPrefix: true });
+  async getTasks(page = 1, pageSize = 10, filter?: string, sort?: string) {
+    const query = qs.stringify(
+      { page, pageSize, filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/task${query}`;
     return (await fetch(api)).json();
@@ -172,7 +200,7 @@ export default class API {
   async getTakerTaskStatus(
     workflow: string,
     taskIndex: number | string,
-    taker: string,
+    taker: string
   ): Promise<Response<TaskStatus>> {
     const api = `${this.endpoint}/workflow/${workflow}/status/taker/${taker}/task/${taskIndex}`;
     return (await fetch(api)).json();
@@ -182,9 +210,12 @@ export default class API {
     workflow: string,
     taker: string,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<TaskStatus>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/${workflow}/status/taker/${taker}/task${query}`;
     return (await fetch(api)).json();
@@ -194,9 +225,12 @@ export default class API {
     workflow: string,
     taskIndex: number,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<TaskStatus>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/${workflow}/task/${taskIndex}/taker${query}`;
     return (await fetch(api)).json();
@@ -214,9 +248,12 @@ export default class API {
     taskIndex: number | string,
     taker: string,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<TaskLogResponse>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/${workflow}/task/${taskIndex}/log/taker/${taker}${query}`;
     return (await fetch(api)).json();
@@ -226,9 +263,12 @@ export default class API {
     workflow: string,
     taskIndex: number,
     filter?: string,
-    sort?: string,
+    sort?: string
   ): Promise<Response<PaginateResult<TaskLogResponse[]>>> {
-    const query = qs.stringify({ filter, sort }, { addQueryPrefix: true });
+    const query = qs.stringify(
+      { filter: encodeURIComponent(filter || ""), sort },
+      { addQueryPrefix: true }
+    );
 
     const api = `${this.endpoint}/workflow/${workflow}/task/${taskIndex}/log${query}`;
     return (await fetch(api)).json();

@@ -1,29 +1,40 @@
-import { AnySchema } from "ajv";
-import fetch from "isomorphic-fetch";
+import { AnySchema } from 'ajv';
+import fetch from 'isomorphic-fetch';
+import promiseAny from 'promise.any';
+
+const IPFS_ENDPOINTS = [
+  'https://ipfs.nftstorage.link',
+  'https://ipfs.fleek.co',
+  // 'https://gateway.pinata.cloud',
+];
 
 export async function getIPFS<R>(hash: string): Promise<R> {
   console.warn(
-    "[Deprecated]: This method(getIPFS) will be deprecated, please use getJSONFromIPFS!"
+    '[Deprecated]: This method(getIPFS) will be deprecated, please use getJSONFromIPFS!',
   );
-  const res = await fetch(`https://alpha.pob.work/api/v1/ipfs/${hash}`);
+  const res = await fetch(`https://ipfs.nftstorage.link/ipfs/${hash}`);
   return res.json();
 }
 
 export async function getJSONFromIPFS<R>(hash: string): Promise<R> {
-  const res = await fetch(`https://alpha.pob.work/api/v1/ipfs/${hash}`);
-  return res.json();
+  const response = await promiseAny(
+    IPFS_ENDPOINTS.map((endpoint) => fetch(`${endpoint}/ipfs/${hash}`)),
+  );
+
+  const data = await response.json();
+  return data;
 }
 
 export async function saveToIPFS(data: AnySchema): Promise<string> {
   console.warn(
-    "[Deprecated]: This method(saveToIPFS) will be deprecated, please use saveJSONToIPFS!"
+    '[Deprecated]: This method(saveToIPFS) will be deprecated, please use saveJSONToIPFS!',
   );
-  const res = await fetch("https://alpha.pob.work/api/v1/ipfs", {
+  const res = await fetch('https://alpha.pob.work/api/v1/ipfs', {
     // const res = await fetch("http://localhost:3001/api/v1/ipfs", {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      "content-type": "application/json",
+      'content-type': 'application/json',
     },
   });
 
@@ -33,12 +44,12 @@ export async function saveToIPFS(data: AnySchema): Promise<string> {
 }
 
 export async function saveJSONToIPFS(data: AnySchema): Promise<string> {
-  const res = await fetch("https://alpha.pob.work/api/v1/ipfs", {
+  const res = await fetch('https://alpha.pob.work/api/v1/ipfs', {
     // const res = await fetch("http://localhost:3001/api/v1/ipfs", {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      "content-type": "application/json",
+      'content-type': 'application/json',
     },
   });
 
@@ -55,19 +66,17 @@ export async function uploadFileToIPFS(file: File): Promise<{
   // Other working urls: @see https://ipfs.github.io/public-gateway-checker/
   urls: string[];
 }> {
-  const username = "e7c467ee-426e-42fd-ae54-c574b5515068";
-  const password = "s1O5gddRKVNXlx5W1l0kjy7XWIkD1zzlf6uRAwxu";
+  const username = 'e7c467ee-426e-42fd-ae54-c574b5515068';
+  const password = 's1O5gddRKVNXlx5W1l0kjy7XWIkD1zzlf6uRAwxu';
 
   const payload = new FormData();
-  payload.append("faile", file);
+  payload.append('faile', file);
 
-  const res = await fetch("https://api.particle.network/ipfs/upload", {
-    method: "POST",
+  const res = await fetch('https://api.particle.network/ipfs/upload', {
+    method: 'POST',
     body: payload,
     headers: {
-      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString(
-        "base64"
-      )}`,
+      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
     },
   });
 

@@ -44,7 +44,7 @@ const serializeWorkflowParams = (params: any) => {
 };
 
 export default class Workflow extends Base {
-  constructor(provider: ethers.providers.Provider | ethers.Signer) {
+  constructor(provider?: ethers.providers.Provider | ethers.Signer) {
     super(provider);
   }
 
@@ -404,9 +404,7 @@ export default class Workflow extends Base {
   ) {
     return this.api.getWorkflowTakersWithStatus(
       workflow,
-      status.length > 0
-        ? `status_in_${status.join("|")},${filter || ""}`
-        : filter,
+      status.length > 0 ? `status:${status},${filter || ""}` : filter,
       sort
     );
   }

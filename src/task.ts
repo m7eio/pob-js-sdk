@@ -12,7 +12,7 @@ import { parseBalance } from "./utils";
 import { validateSchema } from "./valid-describe";
 
 export default class Task extends Base {
-  constructor(provider: ethers.providers.Provider | ethers.Signer) {
+  constructor(provider?: ethers.providers.Provider | ethers.Signer) {
     super(provider);
   }
 

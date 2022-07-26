@@ -42,7 +42,6 @@ export function getContract(
       return contract;
     }
   }
-
   return;
 }
 
