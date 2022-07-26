@@ -1,6 +1,6 @@
 {
   "name": "@m7eio/pob-js-sdk",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Proof of BUIDL protocol sdk.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mete-work/mete-plugins.git"
+    "url": "https://github.com/m7eio/pob-js-sdk.git"
   },
   "publishConfig": {
     "access": "public",
