@@ -1,7 +1,7 @@
-import { CommonTaskRequest } from './task';
-import { QuestWorkflowRequest } from './workflow/template';
+import { CommonTaskRequest } from "./task";
+import { QuestWorkflowRequest } from "./workflow/template";
 
-import contractList from '../contract/contract-list';
+import contractList from "../contract/contract-list";
 
 export interface WorkflowTemplateRequest {
   0: QuestWorkflowRequest;
@@ -10,7 +10,7 @@ export interface WorkflowTemplateRequest {
 }
 
 export interface TaskRequest {
-  'task address': CommonTaskRequest;
+  "task address": CommonTaskRequest;
 }
 
 export interface Rewards {
@@ -29,7 +29,7 @@ export interface SBTParams {
 export type ChianIdList = keyof typeof contractList;
 
 export interface Response<T> {
-  status: 'success' | 'fail';
+  status: "success" | "fail";
   msg: string;
   data: T;
 }
@@ -53,4 +53,11 @@ export interface PaginateResult<T> {
 export interface TokenValue {
   value: string;
   decimals: number;
+}
+
+export interface CommonTransactionResponse {
+  transactionHash: string;
+  logIndex: string;
+  blockHash: string;
+  transactionIndex: string;
 }

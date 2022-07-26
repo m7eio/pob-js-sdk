@@ -1,3 +1,5 @@
+import { CommonTransactionResponse, TokenValue } from "../common";
+
 export interface WorkflowResponse {
   templateIndex: string;
   workflowEnded: boolean;
@@ -13,7 +15,7 @@ export interface WorkflowResponse {
   endTime: number;
   reviewer: string;
   rewardsToken: string;
-  totalRewards: string;
+  totalRewards: TokenValue;
   sbtAddress: string;
   merkleRoot: string;
   decimals: number;
@@ -29,15 +31,15 @@ export interface WorkflowResponse {
   updatedAt: number;
 }
 
-export interface TaskResponse {
+export interface TaskResponse extends CommonTransactionResponse {
   workflow: string;
   taskIndex: number;
   taskAddress: string;
   templateIndex: number;
   onlyOneWinner: boolean;
   reviewer: string;
-  totalRewards: string;
-  remainingRewards: string;
+  totalRewards: TokenValue;
+  remainingRewards: TokenValue;
   feeAmount: string;
   decimals: number;
   deadline: number;
@@ -55,7 +57,7 @@ export interface TaskResponse {
   };
 }
 
-export interface WorkflowTakerStatus {
+export interface WorkflowTakerStatus extends CommonTransactionResponse {
   workflow: string;
   taker: string;
   reviewer: string;
@@ -68,7 +70,7 @@ export interface WorkflowTakerStatus {
   updatedAt: number;
 }
 
-export interface WorkflowLogResponse {
+export interface WorkflowLogResponse extends CommonTransactionResponse {
   workflow: string;
   issuer: string;
   taker: string;

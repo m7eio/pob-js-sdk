@@ -5,14 +5,17 @@ import Task from './task';
 import SBT from './sbt';
 import { getContract } from './utils';
 
+export * as utils from './utils';
+export * as ipfs from './ipfs';
+
 export default class POB extends Base {
   private _workflow: Workflow;
   private _task: Task;
   private _sbt: SBT;
 
-  private _signerOrProvider: ethers.providers.Provider | ethers.Signer;
+  private _signerOrProvider: ethers.providers.Provider | ethers.Signer | undefined;
 
-  constructor(signerOrProvider: ethers.providers.Provider | ethers.Signer) {
+  constructor(signerOrProvider?: ethers.providers.Provider | ethers.Signer) {
     super(signerOrProvider);
     this._signerOrProvider = signerOrProvider;
     this._workflow = new Workflow(signerOrProvider);

@@ -1,3 +1,5 @@
+import { CommonTransactionResponse, TokenValue } from "../common";
+
 export interface CommonTaskRequest {
   onlyOneWinner: boolean;
   taskIndex: number;
@@ -8,7 +10,7 @@ export interface CommonTaskRequest {
   describe: any;
 }
 
-export interface TaskStatus {
+export interface TaskStatus extends CommonTransactionResponse {
   workflow: string;
   taker: string;
   reviewer: string;
@@ -23,7 +25,7 @@ export interface TaskStatus {
   updatedAt: number;
 }
 
-export interface TaskLogResponse {
+export interface TaskLogResponse extends CommonTransactionResponse {
   workflow: string;
   taskIndex: number;
   issuer: string;
@@ -31,7 +33,7 @@ export interface TaskLogResponse {
   reviewer: string;
   action: string;
   content: string;
-  taskFee: string;
+  taskFee: TokenValue;
   createdAt: number;
   updatedAt: number;
 }
