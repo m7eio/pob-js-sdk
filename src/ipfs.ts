@@ -30,7 +30,6 @@ export async function saveToIPFS(data: AnySchema): Promise<string> {
     '[Deprecated]: This method(saveToIPFS) will be deprecated, please use saveJSONToIPFS!',
   );
   const res = await fetch('https://alpha.pob.work/api/v1/ipfs', {
-    // const res = await fetch("http://localhost:3001/api/v1/ipfs", {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -45,7 +44,6 @@ export async function saveToIPFS(data: AnySchema): Promise<string> {
 
 export async function saveJSONToIPFS(data: AnySchema): Promise<string> {
   const res = await fetch('https://alpha.pob.work/api/v1/ipfs', {
-    // const res = await fetch("http://localhost:3001/api/v1/ipfs", {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -70,7 +68,7 @@ export async function uploadFileToIPFS(file: File): Promise<{
   const password = 's1O5gddRKVNXlx5W1l0kjy7XWIkD1zzlf6uRAwxu';
 
   const payload = new FormData();
-  payload.append('faile', file);
+  payload.append('file', file);
 
   const res = await fetch('https://api.particle.network/ipfs/upload', {
     method: 'POST',

@@ -62,6 +62,7 @@ export interface WorkflowTakerStatus extends CommonTransactionResponse {
   taker: string;
   reviewer: string;
   status: string;
+  sbt: number;
   transactionHash: string;
   logIndex: string;
   blockHash: string;
