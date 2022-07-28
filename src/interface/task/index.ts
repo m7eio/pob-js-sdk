@@ -17,6 +17,8 @@ export interface TaskStatus extends CommonTransactionResponse {
   taskIndex: number;
   status: string;
   content: string;
+  rewards: TokenValue;
+  taskFee: TokenValue;
   transactionHash: string;
   logIndex: string;
   blockHash: string;
@@ -33,6 +35,7 @@ export interface TaskLogResponse extends CommonTransactionResponse {
   reviewer: string;
   action: string;
   content: string;
+  rewards: TokenValue;
   taskFee: TokenValue;
   createdAt: number;
   updatedAt: number;
