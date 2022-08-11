@@ -48,25 +48,6 @@
           "internalType": "address",
           "name": "taker",
           "type": "address"
-        }
-      ],
-      "name": "ApplyFor",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "workflow",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "taker",
-          "type": "address"
         },
         {
           "indexed": false,
@@ -583,19 +564,6 @@
     },
     {
       "inputs": [],
-      "name": "APPLYFOR_SIGNATURE",
-      "outputs": [
-        {
-          "internalType": "bytes4",
-          "name": "",
-          "type": "bytes4"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "REMOVETASKS_SIGNATURE",
       "outputs": [
         {
@@ -647,19 +615,6 @@
         }
       ],
       "name": "addTasks",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "workflow",
-          "type": "address"
-        }
-      ],
-      "name": "applyFor",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

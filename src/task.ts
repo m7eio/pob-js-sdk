@@ -1,5 +1,5 @@
 import { AnySchema } from "ajv";
-import { ethers } from "ethers";
+import { ContractTransaction, ethers } from "ethers";
 import Base from "./base";
 import { ZERO_ADDRESS } from "./const";
 import { CommonTaskTemplateDescribe } from "./interface/describe";
@@ -12,8 +12,8 @@ import { parseBalance } from "./utils";
 import { validateSchema } from "./valid-describe";
 
 export default class Task extends Base {
-  constructor(provider?: ethers.providers.Provider | ethers.Signer) {
-    super(provider);
+  constructor(provider?: ethers.providers.Provider | ethers.Signer, options?: { endpoint?: string }) {
+    super(provider, options);
   }
 
   async createTemplate(
@@ -21,7 +21,7 @@ export default class Task extends Base {
     registerFee?: string,
     feeToken?: string,
     feeReceiver?: string
-  ) {
+  ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
     const describeHash = await saveJSONToIPFS(describe);
 
@@ -33,7 +33,10 @@ export default class Task extends Base {
     );
   }
 
-  async enableTemplate(index: number, enable: boolean) {
+  async enableTemplate(
+    index: number,
+    enable: boolean
+  ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
     return factorySignerContract.enableTask(index, enable);
   }
@@ -44,7 +47,7 @@ export default class Task extends Base {
     taker: string,
     content?: { [key: string]: any },
     rewards?: ethers.BigNumber
-  ) {
+  ): Promise<ContractTransaction> {
     const taskResponse = await this.getTask(workflow, taskIndex);
     if (!taskResponse.data) throw new Error(taskResponse.msg);
 
@@ -85,7 +88,7 @@ export default class Task extends Base {
     taskIndex: number,
     taker: string,
     content?: { [key: string]: any }
-  ) {
+  ): Promise<ContractTransaction>  {
     const taskResponse = await this.getTask(workflow, taskIndex);
     if (!taskResponse.data) throw new Error(taskResponse.msg);
 
@@ -120,7 +123,7 @@ export default class Task extends Base {
     workflow: string,
     taskIndex: number,
     content: { [key: string]: any }
-  ) {
+  ): Promise<ContractTransaction>  {
     const taskResponse = await this.getTask(workflow, taskIndex);
     if (!taskResponse.data) throw new Error(taskResponse.msg);
 

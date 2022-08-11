@@ -9,6 +9,7 @@ import { CommonTaskRequest } from "./interface/task";
 import { getJSONFromIPFS, saveJSONToIPFS } from "./ipfs";
 import {
   makeAddTasksCallData,
+  makeApplyWorkflowCallData,
   makeApproveWorkflowCallData,
   makeCloseWorkflowCallData,
   makeCreateWorkflowCallData,
@@ -44,8 +45,8 @@ const serializeWorkflowParams = (params: any) => {
 };
 
 export default class Workflow extends Base {
-  constructor(provider?: ethers.providers.Provider | ethers.Signer) {
-    super(provider);
+  constructor(provider?: ethers.providers.Provider | ethers.Signer, options?: { endpoint?: string }) {
+    super(provider, options);
   }
 
   async create<
@@ -232,7 +233,7 @@ export default class Workflow extends Base {
       return factorySignerContract.createWorkflowTemplate(
         templateAddress,
         parseBalance("0"),
-        "0x542E99eF0FF07aFC8CdDaB29EF4d50A74A299097",
+        "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000",
         describe
       );
@@ -256,7 +257,8 @@ export default class Workflow extends Base {
 
   async apply(workflow: string): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
-    return factorySignerContract.applyFor(workflow);
+    const callData = makeApplyWorkflowCallData();
+    return factorySignerContract.callWorkflow(workflow, callData);
   }
 
   async approve(

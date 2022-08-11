@@ -45,6 +45,13 @@ export function makeCreateWorkflowCallData<
   return workflowParamsBytes;
 }
 
+export function makeApplyWorkflowCallData() {
+  const ABI = [`function applyFor()`];
+  const intface = new ethers.utils.Interface(ABI);
+  const calldata = intface.encodeFunctionData("applyFor", []);
+  return calldata;
+}
+
 export function makeApproveWorkflowCallData(taker: string[]) {
   const ABI = [`function approveWorkflow(address[])`];
   const intface = new ethers.utils.Interface(ABI);

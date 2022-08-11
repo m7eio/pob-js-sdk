@@ -4,8 +4,8 @@ import Base from './base';
 import { makeClaimWorkflowSBTCallData } from './make-call-data';
 
 export default class SBT extends Base {
-  constructor(provider?: ethers.providers.Provider | ethers.Signer) {
-    super(provider);
+  constructor(provider?: ethers.providers.Provider | ethers.Signer, options?: { endpoint?: string }) {
+    super(provider, options);
   }
 
   /**

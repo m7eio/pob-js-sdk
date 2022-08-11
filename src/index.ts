@@ -1,28 +1,34 @@
-import { ContractTransaction, ethers } from 'ethers';
-import Base from './base';
-import Workflow from './workflow';
-import Task from './task';
-import SBT from './sbt';
-import { getContract } from './utils';
+import { ContractTransaction, ethers } from "ethers";
+import Base from "./base";
+import Workflow from "./workflow";
+import Task from "./task";
+import SBT from "./sbt";
+import { getContract } from "./utils";
 
-export * as utils from './utils';
-export * as ipfs from './ipfs';
+export * as utils from "./utils";
+export * as ipfs from "./ipfs";
 
 export default class POB extends Base {
   private _workflow: Workflow;
   private _task: Task;
   private _sbt: SBT;
 
-  private _signerOrProvider: ethers.providers.Provider | ethers.Signer | undefined;
+  private _signerOrProvider:
+    | ethers.providers.Provider
+    | ethers.Signer
+    | undefined;
 
-  constructor(signerOrProvider?: ethers.providers.Provider | ethers.Signer) {
-    super(signerOrProvider);
+  constructor(
+    signerOrProvider?: ethers.providers.Provider | ethers.Signer,
+    options?: { endpoint?: string }
+  ) {
+    super(signerOrProvider, options);
     this._signerOrProvider = signerOrProvider;
-    this._workflow = new Workflow(signerOrProvider);
-    this._task = new Task(signerOrProvider);
-    this._sbt = new SBT(signerOrProvider);
+    this._workflow = new Workflow(signerOrProvider, options);
+    this._task = new Task(signerOrProvider, options);
+    this._sbt = new SBT(signerOrProvider, options);
 
-    this.switchNetwork();
+    // this.switchNetwork();
   }
 
   get workflow() {
@@ -44,55 +50,69 @@ export default class POB extends Base {
   }
 
   async switchNetwork(chainId?: string) {
-    const targetNetworkId = '0x5';
+    const targetNetworkId = "0x5";
 
     // @ts-ignore
     if (window && window.ethereum) {
+      if (this.chainId === +(chainId || targetNetworkId)) return;
       // @ts-ignore
       await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
+        method: "wallet_switchEthereumChain",
         params: [{ chainId: chainId || targetNetworkId }],
       });
     }
   }
 
-  async setFeeToken(token: string, enable: boolean): Promise<ContractTransaction> {
-    const factorySignerContract = await this.getEthersSignerContract('Factory');
+  async setFeeToken(
+    token: string,
+    enable: boolean
+  ): Promise<ContractTransaction> {
+    const factorySignerContract = await this.getEthersSignerContract("Factory");
     return factorySignerContract.setFeeToken(token, enable);
   }
 
-  async setRewardsToken(token: string, enable: boolean): Promise<ContractTransaction> {
-    const factorySignerContract = await this.getEthersSignerContract('Factory');
+  async setRewardsToken(
+    token: string,
+    enable: boolean
+  ): Promise<ContractTransaction> {
+    const factorySignerContract = await this.getEthersSignerContract("Factory");
     return factorySignerContract.setRewardsToken(token, enable);
   }
 
   async tokenApprove(
     token: string,
     spender?: string,
-    amount?: ethers.BigNumber,
+    amount?: ethers.BigNumber
   ): Promise<ContractTransaction> {
-    const erc20Contract = await this.getEthersSignerContract('ERC20', token);
+    const erc20Contract = await this.getEthersSignerContract("ERC20", token);
     if (!spender) {
       // eslint-disable-next-line
       // @ts-ignore
-      const factoryContract = getContract(this.chainId, 'Factory');
+      const factoryContract = getContract(this.chainId, "Factory");
 
-      if (!factoryContract) throw new Error('This network is not supported.');
+      if (!factoryContract) throw new Error("This network is not supported.");
 
       spender = factoryContract.address;
     }
-    return erc20Contract.approve(spender, amount || ethers.constants.MaxUint256);
+    return erc20Contract.approve(
+      spender,
+      amount || ethers.constants.MaxUint256
+    );
   }
 
-  async tokenAllowance(token: string, owner: string, spender?: string): Promise<ethers.BigNumber> {
-    const erc20Contract = await this.getEthersContract('ERC20', token);
+  async tokenAllowance(
+    token: string,
+    owner: string,
+    spender?: string
+  ): Promise<ethers.BigNumber> {
+    const erc20Contract = await this.getEthersContract("ERC20", token);
 
     if (!spender) {
       // eslint-disable-next-line
       // @ts-ignore
-      const factoryContract = getContract(this.chainId, 'Factory');
+      const factoryContract = getContract(this.chainId, "Factory");
 
-      if (!factoryContract) throw new Error('This network is not supported.');
+      if (!factoryContract) throw new Error("This network is not supported.");
 
       spender = factoryContract.address;
     }

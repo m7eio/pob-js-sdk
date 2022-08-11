@@ -1,6 +1,5 @@
 export type FactoryEvents =
   | 'AddTask'
-  | 'ApplyFor'
   | 'CallWorkflow'
   | 'CreateTaskTemplate'
   | 'CreateWorkflow'
@@ -32,7 +31,6 @@ export type FactoryMethodNames =
   | 'SBTBase'
   | 'SUBMIT_SIGNATURE'
   | 'addTasks'
-  | 'applyFor'
   | 'callWorkflow'
   | 'createTaskTemplate'
   | 'createWorkflow'
