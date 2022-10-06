@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import contractList from "./contract/contract-list";
 import ContractInterface from "./contract/interface";
 import { ChianIdList } from "./interface/common";
+import supportedChains, { IChainData } from './chains';
 
 export function getEthersSignerContract<
   T extends keyof typeof contractList[ChianIdList]["contracts"]
@@ -63,3 +64,11 @@ export const formatBalance = (
 export const parseBalance = (value: string, decimals = 18) => {
   return ethers.utils.parseUnits(value || "0", decimals);
 };
+
+
+
+export function getChainData(chainId: number): IChainData | null {
+  const chainData = supportedChains.filter((chain: any) => chain.chain_id === chainId)[0];
+
+  return chainData;
+}

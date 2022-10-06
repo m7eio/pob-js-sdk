@@ -2,6 +2,7 @@ import { AnySchema } from "ajv";
 import { ContractTransaction, ethers } from "ethers";
 import Base from "./base";
 import { ZERO_ADDRESS } from "./const";
+import { Overrides } from "./interface/common";
 import { CommonTaskTemplateDescribe } from "./interface/describe";
 import { getJSONFromIPFS, saveJSONToIPFS } from "./ipfs";
 import {
@@ -12,7 +13,10 @@ import { parseBalance } from "./utils";
 import { validateSchema } from "./valid-describe";
 
 export default class Task extends Base {
-  constructor(provider?: ethers.providers.Provider | ethers.Signer, options?: { endpoint?: string }) {
+  constructor(
+    provider?: ethers.providers.Provider | ethers.Signer,
+    options?: { endpoint?: string }
+  ) {
     super(provider, options);
   }
 
@@ -20,7 +24,8 @@ export default class Task extends Base {
     describe: AnySchema,
     registerFee?: string,
     feeToken?: string,
-    feeReceiver?: string
+    feeReceiver?: string,
+    overrides?: Overrides
   ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
     const describeHash = await saveJSONToIPFS(describe);
@@ -29,16 +34,18 @@ export default class Task extends Base {
       parseBalance(registerFee || "0"),
       feeToken || ZERO_ADDRESS,
       feeReceiver || ZERO_ADDRESS,
-      describeHash
+      describeHash,
+      overrides || {}
     );
   }
 
   async enableTemplate(
     index: number,
-    enable: boolean
+    enable: boolean,
+    overrides?: Overrides
   ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
-    return factorySignerContract.enableTask(index, enable);
+    return factorySignerContract.enableTask(index, enable, overrides || {});
   }
 
   async approve(
@@ -46,7 +53,8 @@ export default class Task extends Base {
     taskIndex: number,
     taker: string,
     content?: { [key: string]: any },
-    rewards?: ethers.BigNumber
+    rewards?: ethers.BigNumber,
+    overrides?: Overrides
   ): Promise<ContractTransaction> {
     const taskResponse = await this.getTask(workflow, taskIndex);
     if (!taskResponse.data) throw new Error(taskResponse.msg);
@@ -80,15 +88,16 @@ export default class Task extends Base {
       rewards || ethers.constants.Zero,
       hash
     );
-    return factorySignerContract.callWorkflow(workflow, callData);
+    return factorySignerContract.callWorkflow(workflow, callData, overrides || {});
   }
 
   async reject(
     workflow: string,
     taskIndex: number,
     taker: string,
-    content?: { [key: string]: any }
-  ): Promise<ContractTransaction>  {
+    content?: { [key: string]: any },
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
     const taskResponse = await this.getTask(workflow, taskIndex);
     if (!taskResponse.data) throw new Error(taskResponse.msg);
 
@@ -116,14 +125,15 @@ export default class Task extends Base {
     }
 
     const callData = makeRejectTaskCallData(taskIndex, taker, hash);
-    return factorySignerContract.callWorkflow(workflow, callData);
+    return factorySignerContract.callWorkflow(workflow, callData, overrides || {});
   }
 
   async submit(
     workflow: string,
     taskIndex: number,
-    content: { [key: string]: any }
-  ): Promise<ContractTransaction>  {
+    content: { [key: string]: any },
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
     const taskResponse = await this.getTask(workflow, taskIndex);
     if (!taskResponse.data) throw new Error(taskResponse.msg);
 
@@ -146,7 +156,7 @@ export default class Task extends Base {
     }
 
     const hash = await saveJSONToIPFS(content);
-    return factorySignerContract.submit(workflow, taskIndex, hash);
+    return factorySignerContract.submit(workflow, taskIndex, hash, overrides || {});
   }
 
   async getTemplate(taskIndex: number | string) {

@@ -3,7 +3,7 @@ import Base from "./base";
 import Workflow from "./workflow";
 import Task from "./task";
 import SBT from "./sbt";
-import { getContract } from "./utils";
+import { getChainData, getContract } from "./utils";
 
 export * as utils from "./utils";
 export * as ipfs from "./ipfs";
@@ -50,16 +50,67 @@ export default class POB extends Base {
   }
 
   async switchNetwork(chainId?: string) {
-    const targetNetworkId = "0x5";
+    const targetNetworkId = chainId || "0x89";
+    const target = getChainData(+targetNetworkId);
 
     // @ts-ignore
     if (window && window.ethereum) {
-      if (this.chainId === +(chainId || targetNetworkId)) return;
-      // @ts-ignore
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: chainId || targetNetworkId }],
-      });
+      if (+targetNetworkId === this.chainId) return;
+      try {
+        // @ts-ignore
+        if (this.provider.provider) {
+          // @ts-ignore
+          return this.provider.provider.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: targetNetworkId }],
+          });
+        }
+
+        // @ts-ignore
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: targetNetworkId }],
+        });
+      } catch (err) {
+        // @ts-ignore
+        if (this.provider.provider) {
+          // @ts-ignore
+          return this.provider.provider.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: targetNetworkId,
+                chainName: target?.name,
+                nativeCurrency: {
+                  name: target?.native_currency?.name,
+                  symbol: target?.native_currency.symbol,
+                  decimals: 18,
+                },
+                rpcUrls: [target?.rpc_url],
+                blockExplorerUrls: [target?.blockExplorerUrls],
+              },
+            ],
+          });
+        }
+
+        // @ts-ignore
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: targetNetworkId,
+              chainName: target?.name,
+              nativeCurrency: {
+                name: target?.native_currency?.name,
+                symbol: target?.native_currency.symbol,
+                decimals: 18,
+              },
+              rpcUrls: [target?.rpc_url],
+              blockExplorerUrls: [target?.blockExplorerUrls],
+            },
+          ],
+        });
+      }
     }
   }
 

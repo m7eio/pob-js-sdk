@@ -1,6 +1,10 @@
 import { ContractTransaction, ethers } from "ethers";
 import Base from "./base";
-import { SBTParams, WorkflowTemplateRequest } from "./interface/common";
+import {
+  Overrides,
+  SBTParams,
+  WorkflowTemplateRequest,
+} from "./interface/common";
 import {
   CommonTaskTemplateDescribe,
   CommonWorkflowTemplateDescribe,
@@ -45,7 +49,10 @@ const serializeWorkflowParams = (params: any) => {
 };
 
 export default class Workflow extends Base {
-  constructor(provider?: ethers.providers.Provider | ethers.Signer, options?: { endpoint?: string }) {
+  constructor(
+    provider?: ethers.providers.Provider | ethers.Signer,
+    options?: { endpoint?: string }
+  ) {
     super(provider, options);
   }
 
@@ -56,7 +63,8 @@ export default class Workflow extends Base {
     templateIndex: K,
     SBT: SBTParams,
     workflowTemplateData: P,
-    tasks: CommonTaskRequest[]
+    tasks: CommonTaskRequest[],
+    overrides?: Overrides
   ): Promise<ContractTransaction> {
     serializeWorkflowParams(workflowTemplateData);
 
@@ -205,7 +213,8 @@ export default class Workflow extends Base {
       templateIndex,
       SBT,
       callData,
-      tasksCallData
+      tasksCallData,
+      overrides || {}
     );
   }
 
@@ -214,7 +223,8 @@ export default class Workflow extends Base {
     describe: string,
     feeAmount?: string,
     feeToken?: string,
-    feeReceiver?: string
+    feeReceiver?: string,
+    overrides?: Overrides
   ) {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
 
@@ -227,7 +237,8 @@ export default class Workflow extends Base {
         parseBalance(feeAmount, decimals),
         feeToken,
         feeReceiver,
-        describe
+        describe,
+        overrides || {}
       );
     } else {
       return factorySignerContract.createWorkflowTemplate(
@@ -235,7 +246,8 @@ export default class Workflow extends Base {
         parseBalance("0"),
         "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000",
-        describe
+        describe,
+        overrides || {}
       );
     }
   }
@@ -249,31 +261,43 @@ export default class Workflow extends Base {
 
   async enableTemplate(
     index: number,
-    enable: boolean
+    enable: boolean,
+    overrides?: Overrides
   ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
-    return factorySignerContract.enableWorkflowTemplate(index, enable);
+    return factorySignerContract.enableWorkflowTemplate(
+      index,
+      enable,
+      overrides || {}
+    );
   }
 
-  async apply(workflow: string): Promise<ContractTransaction> {
+  async apply(
+    workflow: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
     const callData = makeApplyWorkflowCallData();
-    return factorySignerContract.callWorkflow(workflow, callData);
+    return factorySignerContract.callWorkflow(workflow, callData, overrides || {});
   }
 
   async approve(
     workflow: string,
-    taker: string[]
+    taker: string[],
+    overrides?: Overrides
   ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
     const callData = makeApproveWorkflowCallData(taker);
-    return factorySignerContract.callWorkflow(workflow, callData);
+    return factorySignerContract.callWorkflow(workflow, callData, overrides || {});
   }
 
-  async close(workflow: string): Promise<ContractTransaction> {
+  async close(
+    workflow: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
     const factorySignerContract = await this.getEthersSignerContract("Factory");
     const callData = makeCloseWorkflowCallData();
-    return factorySignerContract.callWorkflow(workflow, callData);
+    return factorySignerContract.callWorkflow(workflow, callData, overrides || {});
   }
 
   async getTakerAppliedWorkflows(

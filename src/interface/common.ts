@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import { CommonTaskRequest } from "./task";
 import { QuestWorkflowRequest } from "./workflow/template";
 
@@ -60,4 +61,11 @@ export interface CommonTransactionResponse {
   logIndex: string;
   blockHash: string;
   transactionIndex: string;
+}
+
+export interface Overrides {
+  gasLimit?: ethers.BigNumber;
+  gasPrice?: ethers.BigNumber;
+  value?: ethers.BigNumber;
+  nonce?: number;
 }
