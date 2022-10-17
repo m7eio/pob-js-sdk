@@ -2,3 +2,7 @@ node_modules
 dist
 
 tsconfig.build.tsbuildinfo
+
+packages/example/nodejs/admin.js
+packages/example
+packages/form3

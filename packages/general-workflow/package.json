@@ -1,0 +1,36 @@
+{
+  "name": "@m7eio/pob-general-workflow",
+  "version": "0.0.1",
+  "description": "POB general workflow",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m7eio/pob-js-sdk.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "rm -rf ./dist && mkdir dist && tsc -p tsconfig.build.cjs.json && tsc -p tsconfig.build.esm.json && rm -rf ./dist/*.tsbuildinfo",
+    "watch": "babel src -d dist --source-maps --copy-files --extensions \".ts\" --watch"
+  },
+  "author": "M7e.io <contact@m7e.io>",
+  "license": "MIT",
+  "dependencies": {
+    "@m7eio/pob-core": "workspace:^",
+    "ethers": "^5.6.9"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@types/node": "^18.0.6",
+    "typescript": "^4.0.2"
+  }
+}

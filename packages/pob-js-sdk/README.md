@@ -9,13 +9,13 @@ This is Javascript SDK for Proof of BUILD protocol.
 ## Install
 
 ```
-npm install --save @m7eio/pob-core @m7eio/pob-js-sdk
+npm install --save @m7eio/pob-js-sdk
 ```
 
 Or if you prefer yarn:
 
 ```
-yarn add @m7eio/pob-core @m7eio/pob-js-sdk
+yarn add @m7eio/pob-js-sdk
 ```
 
 ## Usage
