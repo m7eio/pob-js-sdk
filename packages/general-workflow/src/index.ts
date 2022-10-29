@@ -371,6 +371,16 @@ class GeneralWorkflow extends Core {
 
     return contract.taskStatus(taker, taskid);
   }
+
+  async getWorkflowBalance(workflow: string): Promise<ethers.BigNumber> {
+    const contract = new ethers.Contract(
+      workflow,
+      abi.abi as any as ContractInterface,
+      this.signerOrProvider
+    );
+
+    return contract.getWorkflowBalance();
+  }
 }
 
 export default GeneralWorkflow;

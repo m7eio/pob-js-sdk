@@ -1,9 +1,9 @@
 {
   "name": "@m7eio/pob-general-workflow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "POB general workflow",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "files": [
     "dist",
     "LICENSE",
@@ -12,10 +12,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/m7eio/pob-js-sdk.git"
-  },
-  "publishConfig": {
-    "access": "public",
-    "directory": "dist"
   },
   "scripts": {
     "build": "rm -rf ./dist && mkdir dist && tsc -p tsconfig.build.cjs.json && tsc -p tsconfig.build.esm.json && rm -rf ./dist/*.tsbuildinfo",

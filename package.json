@@ -10,7 +10,7 @@
     "build:pob-js-sdk": "cd packages/pob-js-sdk && pnpm build && cd ../..",
     "build:general-workflow": "cd packages/general-workflow && pnpm build && cd ../..",
     "build": "pnpm build:pob-core && pnpm build:pob-js-sdk && pnpm build:general-workflow",
-    "release": "pnpm build && changeset publish",
+    "release": "pnpm build && changeset publish --json",
     "changeset:publish": "changeset publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
