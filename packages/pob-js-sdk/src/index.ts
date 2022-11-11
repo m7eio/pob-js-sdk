@@ -75,11 +75,7 @@ export default class POB extends Base {
   ): Promise<ContractTransaction> {
     const contract = await this.getEthersSignerContract("Factory");
 
-    return contract.setTemplateFeeToken(
-      template,
-      feeToken,
-      overrides || {}
-    );
+    return contract.setTemplateFeeToken(template, feeToken, overrides || {});
   }
 
   async setTemplateFeeAmount(
@@ -89,11 +85,7 @@ export default class POB extends Base {
   ): Promise<ContractTransaction> {
     const contract = await this.getEthersSignerContract("Factory");
 
-    return contract.setTemplateFeeAmount(
-      template,
-      amount,
-      overrides || {}
-    );
+    return contract.setTemplateFeeAmount(template, amount, overrides || {});
   }
 
   async setPlatformTaxGlobal(
@@ -130,6 +122,15 @@ export default class POB extends Base {
     const contract = await this.getEthersSignerContract("Factory");
 
     return contract.setPlatformTaxReceiver(rates, overrides || {});
+  }
+
+  async setWithdrawPeriod(
+    period: ethers.BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
+    const contract = await this.getEthersSignerContract("Factory");
+
+    return contract.setReturnPeriod(period, overrides || {});
   }
 
   async withdrawPlatformTax(
@@ -334,6 +335,11 @@ export default class POB extends Base {
   async getPlatformTaxTemplate(): Promise<ethers.BigNumber> {
     const contract = await this.getEthersContract("Factory");
     return contract.platformTaxTemplate();
+  }
+
+  async getWithdrawPeriod(): Promise<ethers.BigNumber> {
+    const contract = await this.getEthersContract("Factory");
+    return contract.returnPeriod();
   }
 
   async isSettlementToken(token: string): Promise<boolean> {

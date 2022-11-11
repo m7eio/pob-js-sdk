@@ -9,7 +9,7 @@ import {
 import abi from "./abi.json";
 
 class GeneralWorkflow extends Core {
-  public templateAddress = "0x169d06487152CA45B0e41f1aE486cF2B5B259E71";
+  public templateAddress = "0xF67ba30AB0C5b43fA681aC6C4687c9c33A7C8609";
 
   constructor(
     signerOrProvider?: ethers.providers.Provider | ethers.Signer,
@@ -35,7 +35,7 @@ class GeneralWorkflow extends Core {
 
   async enableTasks(
     workflow: string,
-    taskId: number,
+    taskIds: number[],
     enable: boolean,
     overrides?: Overrides
   ): Promise<ContractTransaction> {
@@ -45,7 +45,34 @@ class GeneralWorkflow extends Core {
       this.signerOrProvider
     );
 
-    return contract.enableTasks(taskId, enable, overrides || {});
+    return contract.enableTasks(taskIds, enable, overrides || {});
+  }
+
+  async endWorkflow(
+    workflow: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
+    const contract = new ethers.Contract(
+      workflow,
+      abi.abi as any as ContractInterface,
+      this.signerOrProvider
+    );
+
+    return contract.endWorkflow(overrides || {});
+  }
+
+  async withdraw(
+    workflow: string,
+    receiver: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
+    const contract = new ethers.Contract(
+      workflow,
+      abi.abi as any as ContractInterface,
+      this.signerOrProvider
+    );
+
+    return contract.refund(receiver, overrides || {});
   }
 
   async recharge(

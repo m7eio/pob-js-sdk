@@ -1,7 +1,4 @@
 {
-  "_format": "hh-sol-artifact-1",
-  "contractName": "WorkflowQuest",
-  "sourceName": "contracts/workflows/WorkflowQuest.sol",
   "abi": [
     {
       "anonymous": false,
@@ -167,12 +164,44 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
+          "name": "workflowEndTime",
+          "type": "uint256"
+        }
+      ],
+      "name": "EndWorkflow",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
           "internalType": "address",
           "name": "taker",
           "type": "address"
         }
       ],
       "name": "MintSBT",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "name": "Refund",
       "type": "event"
     },
     {
@@ -483,18 +512,11 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "disableIssuer",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "taskId",
-          "type": "uint256"
+          "internalType": "uint256[]",
+          "name": "taskIds",
+          "type": "uint256[]"
         },
         {
           "internalType": "bool",
@@ -503,6 +525,13 @@
         }
       ],
       "name": "enableTasks",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "endWorkflow",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -839,6 +868,19 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        }
+      ],
+      "name": "refund",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "taskId",
           "type": "uint256"
@@ -1048,6 +1090,32 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "workflowEndTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "workflowEnded",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -1066,7 +1134,5 @@
       "stateMutability": "view",
       "type": "function"
     }
-  ],
-  "linkReferences": {},
-  "deployedLinkReferences": {}
+  ]
 }

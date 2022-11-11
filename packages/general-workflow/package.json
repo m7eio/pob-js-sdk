@@ -1,6 +1,6 @@
 {
   "name": "@m7eio/pob-general-workflow",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "POB general workflow",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
