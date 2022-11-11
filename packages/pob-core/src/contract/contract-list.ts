@@ -32,19 +32,19 @@ const contract = {
   5: {
     contracts: {
       Factory: {
-        address: "0xB77026B93DE5EeaB6455B227252AE95d24afF55b",
+        address: "0xE4Ba26F2F6f2E90F9359771B0FF29f58b6D5be95",
         abi: FactoryABI.abi,
       },
       Payment: {
-        address: "0x1A08ef499ACc04e19dC8a40F5B17974CD1d60A1E",
+        address: "0x4B80E867670B825eAbeE9E630ddFFcA5E684990E",
         abi: PaymentABI.abi,
       },
       SBTBase: {
-        address: "0xeBf8826D262C37B3be1f0DDb7717F45A30207343",
+        address: "0x78dFd94704Ba2e3e5424be34cd5d453c9E734599",
         abi: SBTBaseABI.abi,
       },
       TaskBase: {
-        address: "0x176A74Be115c5417bBE5FCF5CF3CF21de0a5B7dF",
+        address: "0x2D200ba6D5e1A5e99C004AF1d06Bf723B50b1897",
         abi: TaskBaseABI.abi,
       },
       ERC20: {

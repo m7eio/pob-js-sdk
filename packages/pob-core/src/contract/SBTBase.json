@@ -1,31 +1,33 @@
 {
-  "_format": "hh-sol-artifact-1",
-  "contractName": "SBTBase",
-  "sourceName": "contracts/protocol/SBTBase.sol",
   "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
     {
       "anonymous": false,
       "inputs": [
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "address",
-          "name": "owner",
+          "name": "workflow",
           "type": "address"
         },
         {
-          "indexed": true,
-          "internalType": "address",
-          "name": "approved",
-          "type": "address"
-        },
-        {
-          "indexed": true,
+          "indexed": false,
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "uri",
+          "type": "string"
         }
       ],
-      "name": "Approval",
+      "name": "AddWorkflow",
       "type": "event"
     },
     {
@@ -34,7 +36,7 @@
         {
           "indexed": true,
           "internalType": "address",
-          "name": "owner",
+          "name": "account",
           "type": "address"
         },
         {
@@ -58,19 +60,12 @@
       "inputs": [
         {
           "indexed": false,
-          "internalType": "uint8",
-          "name": "version",
-          "type": "uint8"
-        }
-      ],
-      "name": "Initialized",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
+          "internalType": "address",
+          "name": "workflow",
+          "type": "address"
+        },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
@@ -82,12 +77,18 @@
           "type": "string"
         }
       ],
-      "name": "SetURI",
+      "name": "SetUri",
       "type": "event"
     },
     {
       "anonymous": false,
       "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        },
         {
           "indexed": true,
           "internalType": "address",
@@ -101,30 +102,98 @@
           "type": "address"
         },
         {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "values",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "TransferBatch",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
           "internalType": "uint256",
-          "name": "tokenId",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
           "type": "uint256"
         }
       ],
-      "name": "Transfer",
+      "name": "TransferSingle",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "URI",
       "type": "event"
     },
     {
       "inputs": [
         {
           "internalType": "address",
-          "name": "to",
+          "name": "_workflow",
           "type": "address"
         },
         {
+          "internalType": "string",
+          "name": "_uri",
+          "type": "string"
+        }
+      ],
+      "name": "addWorkflow",
+      "outputs": [
+        {
           "internalType": "uint256",
-          "name": "tokenId",
+          "name": "_tokenId",
           "type": "uint256"
         }
       ],
-      "name": "approve",
-      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -132,8 +201,13 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "owner",
+          "name": "account",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
         }
       ],
       "name": "balanceOf",
@@ -148,13 +222,50 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "defaultURI",
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "balanceOfBatch",
       "outputs": [
         {
-          "internalType": "string",
+          "internalType": "uint256[]",
           "name": "",
-          "type": "string"
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "burn",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "factory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -164,11 +275,11 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "tokenId",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "getApproved",
+      "name": "idOwner",
       "outputs": [
         {
           "internalType": "address",
@@ -183,23 +294,8 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "workflow_",
+          "name": "_factory",
           "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "name_",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "symbol_",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "defaultURI_",
-          "type": "string"
         }
       ],
       "name": "initialize",
@@ -211,7 +307,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "owner",
+          "name": "account",
           "type": "address"
         },
         {
@@ -232,51 +328,47 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "name",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "ownerOf",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
           "name": "account",
           "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
         }
       ],
-      "name": "safeMint",
+      "name": "mint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "amounts",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "safeBatchTransferFrom",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -295,30 +387,12 @@
         },
         {
           "internalType": "uint256",
-          "name": "tokenId",
+          "name": "id",
           "type": "uint256"
-        }
-      ],
-      "name": "safeTransferFrom",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "tokenId",
+          "name": "amount",
           "type": "uint256"
         },
         {
@@ -353,17 +427,12 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
           "internalType": "string",
-          "name": "uri",
+          "name": "_uri",
           "type": "string"
         }
       ],
-      "name": "setTokenURI",
+      "name": "setUri",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -389,7 +458,26 @@
     },
     {
       "inputs": [],
-      "name": "symbol",
+      "name": "tokenId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "uri",
       "outputs": [
         {
           "internalType": "string",
@@ -403,59 +491,21 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "tokenURI",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "transferFrom",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "workflow",
-      "outputs": [
-        {
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "name": "workflowId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
       "type": "function"
     }
-  ],
-  "linkReferences": {},
-  "deployedLinkReferences": {}
+  ]
 }

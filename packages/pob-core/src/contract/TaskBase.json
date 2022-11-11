@@ -1,7 +1,4 @@
 {
-  "_format": "hh-sol-artifact-1",
-  "contractName": "TaskBase",
-  "sourceName": "contracts/protocol/TaskBase.sol",
   "abi": [
     {
       "anonymous": false,
@@ -9,16 +6,9 @@
         {
           "indexed": true,
           "internalType": "address",
-          "name": "workflow",
+          "name": "user",
           "type": "address"
-        }
-      ],
-      "name": "Register",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
+        },
         {
           "indexed": true,
           "internalType": "address",
@@ -27,12 +17,12 @@
         },
         {
           "indexed": true,
-          "internalType": "address",
-          "name": "taker",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "uint256",
           "name": "submitId",
           "type": "uint256"
@@ -42,29 +32,10 @@
           "internalType": "string",
           "name": "content",
           "type": "string"
-        },
-        {
-          "indexed": false,
-          "internalType": "string",
-          "name": "describe",
-          "type": "string"
         }
       ],
       "name": "Submit",
       "type": "event"
-    },
-    {
-      "inputs": [],
-      "name": "describe",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
     },
     {
       "inputs": [],
@@ -82,23 +53,18 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "workflow",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "taker",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "_submitId",
+          "type": "uint256"
         }
       ],
-      "name": "getSubmitRecords",
+      "name": "getSubmitInfo",
       "outputs": [
         {
           "components": [
             {
               "internalType": "uint256",
-              "name": "id",
+              "name": "submitId",
               "type": "uint256"
             },
             {
@@ -113,6 +79,11 @@
             },
             {
               "internalType": "uint256",
+              "name": "taskId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "submitTime",
               "type": "uint256"
             },
@@ -122,72 +93,9 @@
               "type": "string"
             }
           ],
-          "internalType": "struct TaskType.Result[]",
-          "name": "records",
-          "type": "tuple[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "factory_",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "describe_",
-          "type": "string"
-        }
-      ],
-      "name": "initialize",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "workflow",
-          "type": "address"
-        }
-      ],
-      "name": "register",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
+          "internalType": "struct ITask.SubmitInfo",
           "name": "",
-          "type": "address"
-        }
-      ],
-      "name": "registeredWorkflow",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "resultId",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
+          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -201,13 +109,87 @@
           "type": "address"
         },
         {
-          "internalType": "string",
-          "name": "content",
-          "type": "string"
+          "internalType": "address",
+          "name": "workflow",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getSubmitRecords",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "submitId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "submitter",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "workflow",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "taskId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "submitTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "content",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct ITask.SubmitInfo[]",
+          "name": "records",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_factory",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "taker",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
         },
         {
           "internalType": "string",
-          "name": "describeDetail",
+          "name": "content",
           "type": "string"
         }
       ],
@@ -215,14 +197,25 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "id",
           "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "submitId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     }
-  ],
-  "linkReferences": {},
-  "deployedLinkReferences": {}
+  ]
 }

@@ -1,17 +1,10 @@
-import { AnySchema } from 'ajv';
-import fetch from 'isomorphic-fetch';
-import promiseAny from 'promise.any';
-
-const IPFS_ENDPOINTS = [
-  'https://ipfs.nftstorage.link',
-  'https://ipfs.fleek.co',
-  // 'https://gateway.pinata.cloud',
-];
+import { AnySchema } from "ajv";
+import fetch from "isomorphic-fetch";
 
 export async function getJSONFromIPFS<R>(hash: string): Promise<R> {
-  const response = await promiseAny(
-    IPFS_ENDPOINTS.map((endpoint) => fetch(`${endpoint}/ipfs/${hash}`)),
-  );
+  const response = await fetch(`https://ipfs.particle.network/${hash}`, {
+    redirect: "follow",
+  });
 
   const data = await response.json();
   return data;
@@ -22,15 +15,17 @@ export async function saveJSONToIPFS(data: AnySchema): Promise<{
   url: string;
   urls: string[];
 }> {
-  const username = 'e7c467ee-426e-42fd-ae54-c574b5515068';
-  const password = 's1O5gddRKVNXlx5W1l0kjy7XWIkD1zzlf6uRAwxu';
+  const username = "e7c467ee-426e-42fd-ae54-c574b5515068";
+  const password = "s1O5gddRKVNXlx5W1l0kjy7XWIkD1zzlf6uRAwxu";
 
-  const res = await fetch('https://api.particle.network/ipfs/upload_json', {
-    method: 'POST',
+  const res = await fetch("https://rpc.particle.network/ipfs/upload_json", {
+    method: "POST",
     body: JSON.stringify(data),
     headers: {
-      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
-      "Content-Type": "application/json"
+      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString(
+        "base64"
+      )}`,
+      "Content-Type": "application/json",
     },
   });
 
@@ -47,17 +42,19 @@ export async function uploadFileToIPFS(file: File): Promise<{
   // Other working urls: @see https://ipfs.github.io/public-gateway-checker/
   urls: string[];
 }> {
-  const username = 'e7c467ee-426e-42fd-ae54-c574b5515068';
-  const password = 's1O5gddRKVNXlx5W1l0kjy7XWIkD1zzlf6uRAwxu';
+  const username = "e7c467ee-426e-42fd-ae54-c574b5515068";
+  const password = "s1O5gddRKVNXlx5W1l0kjy7XWIkD1zzlf6uRAwxu";
 
   const payload = new FormData();
-  payload.append('file', file);
+  payload.append("file", file);
 
-  const res = await fetch('https://api.particle.network/ipfs/upload', {
-    method: 'POST',
+  const res = await fetch("https://rpc.particle.network/ipfs/upload", {
+    method: "POST",
     body: payload,
     headers: {
-      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString(
+        "base64"
+      )}`,
     },
   });
 
